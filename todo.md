@@ -17,3 +17,4 @@
 - [x] Fix sidebar navigation so Lineage Explorer, Runs, Versions, and Reports render their own complete content views.
 - [x] Keep terminal result nodes visible in downstream lineage mode and provide a meaningful causal-path fallback.
 - [x] Create a private GitHub repository, push the validated ProvenanceX project, and verify the remote handoff.
+- [x] Rewrite GitHub commit author and committer metadata to CSE - 148 - SHREYAN BHUNIA using shreyan.bhunia.k@gmail.com.
