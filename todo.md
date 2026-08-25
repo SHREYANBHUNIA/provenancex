@@ -16,3 +16,4 @@
 - [x] Verify desktop and mobile interface rendering, update completion status, and save a delivery checkpoint.
 - [x] Fix sidebar navigation so Lineage Explorer, Runs, Versions, and Reports render their own complete content views.
 - [x] Keep terminal result nodes visible in downstream lineage mode and provide a meaningful causal-path fallback.
+- [ ] Create a private GitHub repository, push the validated ProvenanceX project, and verify the remote handoff.
