@@ -15,4 +15,11 @@ describe("provenance lineage helpers", () => {
     expect(report.staleReason).toContain("orders_raw");
     expect(report.reproduction.workflow).toBe("score_customers");
   });
+
+  it("keeps a terminal published result visible in downstream mode with its causal path", () => {
+    const trace = traceNode("result-risk", "downstream");
+    expect(trace.nodes.map(node => node.id)).toContain("result-risk");
+    expect(trace.nodes.map(node => node.id)).toContain("dataset-orders");
+    expect(trace.edges).toHaveLength(9);
+  });
 });

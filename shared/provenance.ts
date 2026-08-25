@@ -202,6 +202,11 @@ export function traceNode(id: string, direction: "upstream" | "downstream" | "al
       }
     });
   }
+  // A terminal result has no downstream dependents. In that case, surface its complete
+  // causal path instead of rendering an effectively empty one-node graph.
+  if (direction === "downstream" && visited.size === 1) {
+    return traceNode(id, "upstream");
+  }
   return {
     nodes: provenanceNodes.filter(node => visited.has(node.id)),
     edges: provenanceEdges.filter(edge => visited.has(edge.source) && visited.has(edge.target)),
