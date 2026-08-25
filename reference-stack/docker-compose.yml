@@ -1,0 +1,56 @@
+services:
+  neo4j:
+    image: neo4j:5.25-community
+    environment:
+      NEO4J_AUTH: neo4j/provenancex-local
+      NEO4J_PLUGINS: '["apoc"]'
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    volumes:
+      - neo4j_data:/data
+  temporal-postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: temporal
+      POSTGRES_USER: temporal
+      POSTGRES_DB: temporal
+    volumes:
+      - temporal_postgres:/var/lib/postgresql/data
+  temporal:
+    image: temporalio/auto-setup:1.25.1
+    depends_on:
+      - temporal-postgres
+    environment:
+      DB: postgres12
+      DB_PORT: 5432
+      POSTGRES_USER: temporal
+      POSTGRES_PWD: temporal
+      POSTGRES_SEEDS: temporal-postgres
+    ports:
+      - "7233:7233"
+  provenance-api:
+    build: ./provenancex
+    depends_on:
+      - neo4j
+      - temporal
+    environment:
+      NEO4J_URI: neo4j://neo4j:7687
+      NEO4J_USERNAME: neo4j
+      NEO4J_PASSWORD: provenancex-local
+      TEMPORAL_HOST: temporal:7233
+      TEMPORAL_TASK_QUEUE: provenancex-reproduction
+    ports:
+      - "8000:8000"
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+  provenance-worker:
+    build: ./provenancex
+    depends_on:
+      - temporal
+    environment:
+      TEMPORAL_HOST: temporal:7233
+      TEMPORAL_TASK_QUEUE: provenancex-reproduction
+    command: python -m pipeline.worker
+volumes:
+  neo4j_data:
+  temporal_postgres:
