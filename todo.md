@@ -14,3 +14,4 @@
 - [x] Add setup documentation for local services and example execution.
 - [x] Add Vitest coverage for backend domain behavior and run the project test, type-check, and build checks.
 - [x] Verify desktop and mobile interface rendering, update completion status, and save a delivery checkpoint.
+- [x] Fix sidebar navigation so Lineage Explorer, Runs, Versions, and Reports render their own complete content views.
